@@ -5,9 +5,14 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header bg-primary">{{ __('Iniciar Sesión') }}</div>
+                <div class="card-header bg-blue">{{ __('Iniciar Sesión') }}</div>
 
                 <div class="card-body">
+                @if ($errors->has('g-recaptcha-response'))
+                 <span class="help-block">
+                <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                 </span>
+@endif
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
@@ -50,10 +55,15 @@
                                 </div>
                             </div>
                         </div>
-
+                        
+                        <div>
+                        {!! NoCaptcha::renderJs('es', false, 'onloadCallback') !!}
+                        {!! NoCaptcha::display() !!}
+                        </div>
+                        <br>
                         <div class="row mb-0">
                             <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-orange">
                                     {{ __('Iniciar') }}
                                 </button>
 
@@ -71,3 +81,8 @@
     </div>
 </div>
 @endsection
+<script type="text/javascript">
+  var onloadCallback = function() {
+    alert("grecaptcha is ready!");
+  };
+</script>
